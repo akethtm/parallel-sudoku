@@ -22,8 +22,8 @@
 #include "stdio.h"
 #include "omp.h"
 #define ORDER 9
-extern int sudoku[ORDER][ORDER];
-int checkRow(int row, int num) 
+
+int checkRow(int sudoku[ORDER][ORDER],int row, int num) 
 {
 
   int foundnum = 0;
@@ -42,7 +42,7 @@ int checkRow(int row, int num)
     return 1;
 }
 
-int checkColumn(int column, int num) 
+int checkColumn(int sudoku[ORDER][ORDER],int column, int num) 
 {
   int foundnum = 0;
   for (int i = 0; i < 9; i++) {
@@ -57,7 +57,7 @@ int checkColumn(int column, int num)
     return 1;
 }
 
-int checkSquare(int row, int column, int num) 
+int checkSquare(int sudoku[ORDER][ORDER], int row, int column, int num) 
 {
   int foundnum = 0;
   int startIndexRow = (row / 3) *   3;

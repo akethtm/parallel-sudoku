@@ -8,7 +8,7 @@
 
 using namespace std;
 
-int sudoku[ORDER][ORDER] = {0};
+//int sudoku[ORDER][ORDER] = {0};
 int isClueGiven[ORDER][ORDER] = {0};
 int prevPosition[ORDER][ORDER][2];
 int placeNum(int row, int column);
@@ -27,7 +27,7 @@ void print(int matrix[ORDER][ORDER])
 }
 
 
-void storePositions()  /* probably stores the next position to be solved */
+void storePositions(int sudoku[ORDER][ORDER])  /* probably stores the next position to be solved */
 {
   int temprow, tempcolumn;
   temprow = -1;
@@ -46,7 +46,7 @@ void storePositions()  /* probably stores the next position to be solved */
 }
 
 
-int goBack(int &row, int &column)
+int goBack(int sudoku[ORDER][ORDER],int &row, int &column)
 {
   int trow, tcolumn;
   
@@ -65,7 +65,7 @@ int goBack(int &row, int &column)
 }
 
 
-int placeNum(int row, int column)
+int placeNum(int sudoku[ORDER][ORDER],int row, int column)
 {
 
   if(isClueGiven[row][column] == 1)
@@ -73,7 +73,7 @@ int placeNum(int row, int column)
 
   for (int num = sudoku[row][column] + 1; num <= 9; num++) {
 
-    if (checkRow(row,num) && checkColumn(column, num) && checkSquare(row,column,num) ) {
+    if (checkRow(sudoku,row,num) && checkColumn(sudoku,column, num) && checkSquare(sudoku,row,column,num) ) {
       sudoku[row][column] = num;
       return 1;
     }
@@ -85,29 +85,34 @@ int placeNum(int row, int column)
 }
 
 
-int solveSudoku()
+int solveSudoku(int sudoku[ORDER][ORDER])
 {
  
   long double start_time,end_time;
   
   start_time = omp_get_wtime();
+
   for (int row = 0; row < 9; row++) {
     for (int column = 0; column < 9; column++) {
-      if (!placeNum(row, column))  // if I cannot place a number go back.
+      if (!placeNum(sudoku,row, column))  // if I cannot place a number go back.
       {
 	sudoku[row][column] = 0;
-	if (!goBack(row, column)) return 0;
+	if (!goBack(sudoku,row, column)) return 0;
       }
     }
   }
+
   end_time = omp_get_wtime();
-  printf("time here is %LG \n ",end_time - start_time);
+  //printf("time here is %LG \n ",end_time - start_time);
   return 1;
 }
 
 
 int main(int argc, char* argv[])
 {
+
+  int sudoku[ORDER][ORDER] = {0};
+
   fstream file;
    
   if (argc == 2) 
@@ -145,8 +150,8 @@ int main(int argc, char* argv[])
     print (sudoku);
   }
   
-    storePositions();
-    solveSudoku();
+    storePositions(sudoku);
+    solveSudoku(sudoku);
     print(sudoku); 
      return 0;
 }

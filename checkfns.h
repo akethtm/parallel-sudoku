@@ -1,9 +1,10 @@
 #ifndef CHECKFNS_H
 #define CHECKFNS_H
+#define ORDER 9
 
-int checkRow(int row, int num); 
-int checkColumn(int column, int num);
-int checkSquare(int row, int column, int num);
+int checkRow(int sudoku[ORDER][ORDER], int row, int num); 
+int checkColumn(int sudoku[ORDER][ORDER], int column, int num);
+int checkSquare(int sudoku[ORDER][ORDER], int row, int column, int num);
 int checkSolution() ;
 
 #endif /* CHECKS_H */
