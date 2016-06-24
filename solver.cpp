@@ -68,18 +68,9 @@ int goBack(int &row, int &column)
 int placeNum(int row, int column)
 {
 
- bool checker;
- long start_time,end_time;
-  
-  start_time = omp_get_wtime();
-  checker = checkRow(row,num) && checkColumn(column, num) && checkSquare(row,column,num);
-  end_time = omp_get_wtime()
-
-  printf("time taken is %d",end_time - start_time);
-
   if(isClueGiven[row][column] == 1)
     return 1;
-    
+
   for (int num = sudoku[row][column] + 1; num <= 9; num++) {
 
     if (checkRow(row,num) && checkColumn(column, num) && checkSquare(row,column,num) ) {
@@ -87,7 +78,7 @@ int placeNum(int row, int column)
       return 1;
     }
   }
-    
+     
   sudoku[row][column] = 0;
     
   return 0;
@@ -96,6 +87,10 @@ int placeNum(int row, int column)
 
 int solveSudoku()
 {
+ 
+  long double start_time,end_time;
+  
+  start_time = omp_get_wtime();
   for (int row = 0; row < 9; row++) {
     for (int column = 0; column < 9; column++) {
       if (!placeNum(row, column))  // if I cannot place a number go back.
@@ -105,7 +100,8 @@ int solveSudoku()
       }
     }
   }
-    
+  end_time = omp_get_wtime();
+  printf("time here is %LG \n ",end_time - start_time);
   return 1;
 }
 
