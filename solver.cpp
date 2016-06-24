@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include "checkfns.h"
+#include <omp.h>
 #define ORDER 9
 
 using namespace std;
@@ -35,8 +36,8 @@ void storePositions()  /* probably stores the next position to be solved */
   for (int row = 0; row < 9; row++) {
     for (int column = 0; column < 9; column++) {
       if (isClueGiven[row][column] == 0) {
-	prevPosition[row][column][0] = temprow;
-	prevPosition[row][column][1] = tempcolumn;
+	prevPosition[row][column][0] = temprow;    /* previous position is stored and set zero for first one.why? */
+	prevPosition[row][column][1] = tempcolumn; 
 	temprow = row;
 	tempcolumn = column;
       }
@@ -66,10 +67,21 @@ int goBack(int &row, int &column)
 
 int placeNum(int row, int column)
 {
+
+ bool checker;
+ long start_time,end_time;
+  
+  start_time = omp_get_wtime();
+  checker = checkRow(row,num) && checkColumn(column, num) && checkSquare(row,column,num);
+  end_time = omp_get_wtime()
+
+  printf("time taken is %d",end_time - start_time);
+
   if(isClueGiven[row][column] == 1)
     return 1;
     
   for (int num = sudoku[row][column] + 1; num <= 9; num++) {
+
     if (checkRow(row,num) && checkColumn(column, num) && checkSquare(row,column,num) ) {
       sudoku[row][column] = num;
       return 1;
@@ -86,10 +98,10 @@ int solveSudoku()
 {
   for (int row = 0; row < 9; row++) {
     for (int column = 0; column < 9; column++) {
-      if (!placeNum(row, column)) {
+      if (!placeNum(row, column))  // if I cannot place a number go back.
+      {
 	sudoku[row][column] = 0;
-	if (!goBack(row, column))
-	  return 0;
+	if (!goBack(row, column)) return 0;
       }
     }
   }

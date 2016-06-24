@@ -19,17 +19,23 @@
 //      
 //      
 #include "checkfns.h"
+#include "stdio.h"
+#include "omp.h"
 #define ORDER 9
 extern int sudoku[ORDER][ORDER];
 int checkRow(int row, int num) 
 {
+
   int foundnum = 0;
-  for (int i = 0; i < 9; i++) {
+  double start_time,end_time;
+
+  for ( int i = 0; i < 9; i++) {
     if (sudoku[row][i] == num) {
       foundnum = 1;
       break;
     }
   }
+
   if (foundnum == 1)
     return 0;
   else
