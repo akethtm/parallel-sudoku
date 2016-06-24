@@ -90,7 +90,7 @@ int solveSudoku(int sudoku[ORDER][ORDER])
  
   long double start_time,end_time;
   
-  start_time = omp_get_wtime();
+  //start_time = omp_get_wtime();
 
   for (int row = 0; row < 9; row++) {
     for (int column = 0; column < 9; column++) {
@@ -102,7 +102,7 @@ int solveSudoku(int sudoku[ORDER][ORDER])
     }
   }
 
-  end_time = omp_get_wtime();
+  //end_time = omp_get_wtime();
   //printf("time here is %LG \n ",end_time - start_time);
   return 1;
 }
@@ -111,7 +111,7 @@ int solveSudoku(int sudoku[ORDER][ORDER])
 int main(int argc, char* argv[])
 {
 
-  int sudoku[ORDER][ORDER] = {0};
+  int sudoku[ORDER][ORDER] = {0}, seed;
 
   fstream file;
    
