@@ -11,6 +11,7 @@ using namespace std;
 //int sudoku[ORDER][ORDER] = {0};
 int isClueGiven[ORDER][ORDER] = {0};
 int prevPosition[ORDER][ORDER][2];
+
 int placeNum(int row, int column);
 
 
@@ -152,6 +153,7 @@ int main(int argc, char* argv[])
   }
   
     storePositions(sudoku);
+    #pragma omp parallel for default(shared)firstprivate(sudoku,isClueGiven,prevPosition)num_threads(2)
     for(seed=1;seed<=9;seed++)
        {
               for (int row = 0; row < ORDER; row++) {
@@ -159,7 +161,8 @@ int main(int argc, char* argv[])
                        if (sudoku[row][column] !=0) isClueGiven[row][column] = 1;
                   }
                }
-       solveSudoku(sudoku); 
+       solveSudoku(sudoku);
+       print(sudoku); 
        }
     print(sudoku); 
      return 0;
