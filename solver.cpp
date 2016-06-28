@@ -89,7 +89,8 @@ int solveSudoku(int sudoku[ORDER][ORDER])
 {
  
   long double start_time,end_time;
-  
+  int seed; 
+ 
   //start_time = omp_get_wtime();
 
   for (int row = 0; row < 9; row++) {
@@ -151,7 +152,15 @@ int main(int argc, char* argv[])
   }
   
     storePositions(sudoku);
-    solveSudoku(sudoku);
+    for(seed=1;seed<=9;seed++)
+       {
+              for (int row = 0; row < ORDER; row++) {
+                  for (int column = 0; column < ORDER; column++) {
+                       if (sudoku[row][column] !=0) isClueGiven[row][column] = 1;
+                  }
+               }
+       solveSudoku(sudoku); 
+       }
     print(sudoku); 
      return 0;
 }
