@@ -154,7 +154,7 @@ int main(int argc, char* argv[])
   
     storePositions(sudoku);
     #pragma omp parallel for default(shared)firstprivate(sudoku,isClueGiven,prevPosition)num_threads(2)
-    for(seed=1;seed<=9;seed++)
+    for(seed=1;seed<=2;seed++)
        {
               for (int row = 0; row < ORDER; row++) {
                   for (int column = 0; column < ORDER; column++) {
