@@ -86,14 +86,13 @@ int placeNum(int sudoku[ORDER][ORDER],int row, int column)
 }
 
 
-int solveSudoku(int sudoku[ORDER][ORDER])
+int solveSudoku(int sudoku[ORDER][ORDER], int start_num)
 {
  
   long double start_time,end_time;
-  int seed; 
- 
   //start_time = omp_get_wtime();
-
+   
+  
   for (int row = 0; row < 9; row++) {
     for (int column = 0; column < 9; column++) {
       if (!placeNum(sudoku,row, column))  // if I cannot place a number go back.
@@ -114,6 +113,8 @@ int main(int argc, char* argv[])
 {
 
   int sudoku[ORDER][ORDER] = {0}, seed;
+  int first_zero_row,first_zero_column;
+  bool breakpoint;
 
   fstream file;
    
@@ -152,16 +153,38 @@ int main(int argc, char* argv[])
     print (sudoku);
   }
   
+  for( int row = 0; row < ORDER; row++) {
+    if(breakpoint) break; 
+    for(int column = 0; column < ORDER; column++ ){
+ 
+           if(sudoku[row][column] == 0) 
+               {
+                    first_zero_row = row; 
+                    first_zero_column = column; 
+                    breakpoint = true; 
+                    break;
+                }
+                                             
+        }
+     } 
+
+    cout << "first_zero_row,first_zero_column are "<< first_zero_row << " and " << first_zero_column << endl;
+    cout << endl;
+
     storePositions(sudoku);
     #pragma omp parallel for default(shared)firstprivate(sudoku,isClueGiven,prevPosition)num_threads(2)
     for(seed=1;seed<=2;seed++)
-       {
+       {            
+
               for (int row = 0; row < ORDER; row++) {
                   for (int column = 0; column < ORDER; column++) {
-                       if (sudoku[row][column] !=0) isClueGiven[row][column] = 1;
+                       if (sudoku[row][column] !=0) 
+                           {
+                              isClueGiven[row][column] = 1;
+                           }
                   }
                }
-       solveSudoku(sudoku);
+       solveSudoku(sudoku,seed);
        print(sudoku); 
        }
     print(sudoku); 
