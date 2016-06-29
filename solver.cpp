@@ -168,14 +168,14 @@ int main(int argc, char* argv[])
         }
      } 
 
-    cout << "first_zero_row,first_zero_column are "<< first_zero_row << " and " << first_zero_column << endl;
-    cout << endl;
+    //cout << "first_zero_row,first_zero_column are "<< first_zero_row << " and " << first_zero_column << endl;
+    //cout << endl;
 
     storePositions(sudoku);
     #pragma omp parallel for default(shared)firstprivate(sudoku,isClueGiven,prevPosition)num_threads(2)
-    for(seed=1;seed<=2;seed++)
+    for(seed=1;seed<=9;seed++)
        {            
-
+              sudoku[first_zero_row][first_zero_column] = seed;
               for (int row = 0; row < ORDER; row++) {
                   for (int column = 0; column < ORDER; column++) {
                        if (sudoku[row][column] !=0) 
