@@ -183,9 +183,13 @@ int main(int argc, char* argv[])
                            }
                   }
                }
-               sudoku[first_zero_row][first_zero_column] = seed;
-       solveSudoku(sudoku,seed);
-       print(sudoku); 
+               
+       if(checkRow(sudoku,first_zero_row,seed) && checkColumn(sudoku,first_zero_column,seed) && checkSquare(sudoku,first_zero_row,first_zero_column,seed))
+       {         
+             sudoku[first_zero_row][first_zero_column] = seed;
+             solveSudoku(sudoku,seed);
+             print(sudoku);
+       }                
        }
     print(sudoku); 
      return 0;
