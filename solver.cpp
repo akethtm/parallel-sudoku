@@ -8,9 +8,12 @@
 
 using namespace std;
 
-//int sudoku[ORDER][ORDER] = {0};
+int solution_sudoku[ORDER][ORDER] = {0};
 int isClueGiven[ORDER][ORDER] = {0};
 int prevPosition[ORDER][ORDER][2];
+static bool solution_found = false;
+
+
 
 int placeNum(int row, int column);
 
@@ -95,6 +98,7 @@ int solveSudoku(int sudoku[ORDER][ORDER], int start_num)
   
   for (int row = 0; row < 9; row++) {
     for (int column = 0; column < 9; column++) {
+      if(solution_found) {return 0;}
       if (!placeNum(sudoku,row, column))  // if I cannot place a number go back.
       {
 	sudoku[row][column] = 0;
@@ -172,7 +176,7 @@ int main(int argc, char* argv[])
     //cout << endl;
 
     storePositions(sudoku);
-    #pragma omp parallel for default(shared)firstprivate(sudoku,isClueGiven,prevPosition)num_threads(2)
+    #pragma omp parallel for default(shared)firstprivate(sudoku,isClueGiven,prevPosition)num_threads(4)
     for(seed=1;seed<=9;seed++)
        {            
               for (int row = 0; row < ORDER; row++) {
@@ -184,13 +188,23 @@ int main(int argc, char* argv[])
                   }
                }
                
-       if(checkRow(sudoku,first_zero_row,seed) && checkColumn(sudoku,first_zero_column,seed) && checkSquare(sudoku,first_zero_row,first_zero_column,seed))
+       if(checkRow(sudoku,first_zero_row,seed) && checkColumn(sudoku,first_zero_column,seed) && 
+                                                  checkSquare(sudoku,first_zero_row,first_zero_column,seed))
        {         
              sudoku[first_zero_row][first_zero_column] = seed;
              solveSudoku(sudoku,seed);
-             print(sudoku);
+             if(checkSolution(sudoku) && !solution_found) 
+                 {
+                       solution_found = true;  
+                       for(int row = 0; row < ORDER; row++)
+                         for(int column = 0;column < ORDER; column ++)
+                              {
+                                solution_sudoku[row][column] = sudoku[row][column];
+                              }
+                 }
        }                
        }
-    print(sudoku); 
+
+    print(solution_sudoku); 
      return 0;
 }

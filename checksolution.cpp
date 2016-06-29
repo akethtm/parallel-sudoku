@@ -12,7 +12,7 @@
 
 using namespace std;
 
-extern int sudoku[ORDER][ORDER];
+//extern int sudoku[ORDER][ORDER];
 int check (int y[]);
 int temp[ORDER];
 
@@ -86,7 +86,7 @@ int SquaresCheck (int x[ORDER][ORDER]) {
   return 1;
 }
 
-int checkSolution() 
+int checkSolution(int sudoku[ORDER][ORDER]) 
 {
   if ( !rowCheck(sudoku) || !columnCheck(sudoku) || !SquaresCheck(sudoku) )
      return 0;
