@@ -175,7 +175,6 @@ int main(int argc, char* argv[])
     #pragma omp parallel for default(shared)firstprivate(sudoku,isClueGiven,prevPosition)num_threads(2)
     for(seed=1;seed<=9;seed++)
        {            
-              sudoku[first_zero_row][first_zero_column] = seed;
               for (int row = 0; row < ORDER; row++) {
                   for (int column = 0; column < ORDER; column++) {
                        if (sudoku[row][column] !=0) 
@@ -184,6 +183,7 @@ int main(int argc, char* argv[])
                            }
                   }
                }
+               sudoku[first_zero_row][first_zero_column] = seed;
        solveSudoku(sudoku,seed);
        print(sudoku); 
        }
